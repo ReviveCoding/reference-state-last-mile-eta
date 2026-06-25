@@ -53,6 +53,7 @@ reference-eta = "reference_eta.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["reference_eta*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "reference_eta.__version__"}

@@ -98,8 +98,7 @@ jobs:
             requirements-dev.txt
       - name: Install cross-platform test environment
         run: >-
-          python -m pip install -e .
-          pytest pytest-cov httpx ruff build wheel packaging
+          python -m pip install -e . pytest pytest-cov httpx "ruff>=0.5,<1" build wheel packaging "mypy>=1.10,<2" "types-PyYAML>=6.0,<7"
       - name: Cross-platform static and process contracts
         run: |
           python scripts/tasks.py lint

@@ -55,6 +55,10 @@ def main() -> None:
     required_suffixes = {
         "reference_eta/__init__.py",
         "reference_eta/cli.py",
+        "reference_eta/data/__init__.py",
+        "reference_eta/data/lade.py",
+        "reference_eta/evaluation/bootstrap.py",
+        "reference_eta/models/baselines.py",
         "reference_eta/serving/api.py",
     }
     missing = [
@@ -117,6 +121,9 @@ class BlockTorch(importlib.abc.MetaPathFinder):
 
 sys.meta_path.insert(0, BlockTorch())
 import reference_eta
+from reference_eta.data.lade import build_closed_set_snapshots
+from reference_eta.evaluation.bootstrap import clustered_mae_difference_ci
+from reference_eta.models.baselines import LightGBMPointModel
 from reference_eta.serving.api import app
 from reference_eta.serving.schemas import SnapshotRequest
 print(json.dumps({
