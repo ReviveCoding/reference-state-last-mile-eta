@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      python-runtime:
+        patterns:
+          - "numpy"
+          - "pandas"
+          - "scikit-learn"
+          - "lightgbm"
+          - "fastapi"
+          - "pydantic"
+      python-tooling:
+        dependency-type: development
+        patterns:
+          - "pytest*"
+          - "ruff"
+          - "build"
+          - "wheel"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

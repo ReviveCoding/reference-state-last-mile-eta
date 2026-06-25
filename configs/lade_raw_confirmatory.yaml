@@ -1,0 +1,48 @@
+seed: 314159
+data:
+  source: lade_normalized
+  path: artifacts/lade_raw_confirmatory/lade_delivery_normalized.csv
+  snapshot_stride: 3
+  default_service_minutes: 5.0
+  assumed_speed_kmh: 15.0
+split:
+  train: 0.6
+  validation: 0.15
+  calibration: 0.1
+  test: 0.15
+rcot:
+  min_cohort_rows: 40
+  min_cohort_groups: 10
+  support_shrinkage: 75.0
+  max_dispersion_minutes: 90.0
+  cross_fit_splits: 5
+model:
+  n_estimators: 500
+  learning_rate: 0.03
+  num_leaves: 48
+  min_child_samples: 30
+  random_state: 42
+advanced:
+  enabled: false
+  epochs: 15
+  batch_size: 256
+  hidden_dim: 128
+  learning_rate: 0.0005
+  max_tasks: 64
+  amp: true
+  deterministic: true
+calibration:
+  lower_alpha: 0.1
+  upper_alpha: 0.9
+  target_coverage: 0.8
+  coverage_tolerance: 0.08
+  minimum_test_rows: 100
+decision:
+  capacities:
+  - 0.05
+  - 0.1
+  - 0.2
+  review_cost: 1.0
+  selection_capacity: 0.1
+  minimum_validation_tail_events: 5
+  minimum_test_tail_events: 20

@@ -1,0 +1,53 @@
+seed: 42
+data:
+  source: synthetic
+  n_courier_days: 60
+  start_date: '2026-01-01'
+  cities:
+  - Atlanta
+  - Boston
+  - Chicago
+  min_tasks: 10
+  max_tasks: 20
+  snapshot_stride: 3
+split:
+  train: 0.6
+  validation: 0.15
+  calibration: 0.1
+  test: 0.15
+rcot:
+  min_cohort_rows: 20
+  min_cohort_groups: 5
+  support_shrinkage: 35.0
+  max_dispersion_minutes: 45.0
+  cross_fit_splits: 5
+model:
+  n_estimators: 100
+  learning_rate: 0.05
+  num_leaves: 24
+  min_child_samples: 12
+  random_state: 42
+advanced:
+  enabled: true
+  epochs: 1
+  batch_size: 64
+  hidden_dim: 32
+  learning_rate: 0.001
+  max_tasks: 24
+  amp: true
+  deterministic: true
+calibration:
+  lower_alpha: 0.1
+  upper_alpha: 0.9
+  target_coverage: 0.8
+  minimum_test_rows: 30
+  coverage_tolerance: 0.1
+decision:
+  capacities:
+  - 0.05
+  - 0.1
+  - 0.2
+  review_cost: 1.0
+  selection_capacity: 0.1
+  minimum_validation_tail_events: 5
+  minimum_test_tail_events: 3

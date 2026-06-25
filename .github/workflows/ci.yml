@@ -1,0 +1,128 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            requirements.txt
+            requirements-dev.txt
+            constraints/ci-py311.txt
+      - name: Install project
+        run: python -m pip install -c constraints/ci-py311.txt -e ".[dev]"
+      - name: Static checks
+        run: make lint typecheck
+      - name: Unit, contract, leakage, and integration tests with coverage gate
+        run: make coverage
+      - name: Compact structured-model smoke
+        run: make advanced-smoke
+      - name: End-to-end synthetic smoke
+        run: make smoke
+      - name: Generated-artifact API verification
+        run: PYTHONPATH=src python scripts/verify_runtime_api.py
+      - name: Deterministic replay verification
+        run: make repro-check
+      - name: Generate runtime SBOM
+        run: make sbom
+      - name: Normalized LaDe adapter smoke
+        run: make lade-smoke
+      - name: Official-shaped Amazon adapter smoke
+        run: make amazon-smoke
+      - name: Package and run-artifact manifest checks
+        run: make package-check verify-manifest
+      - name: Build and verify release manifest
+        run: make release-manifest
+      - name: Upload validation evidence
+        uses: actions/upload-artifact@v6
+        with:
+          name: validation-evidence-py311
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            dist/*
+            reports/**/*.csv
+            reports/**/*.json
+            reports/**/*.md
+            reports/sbom.cdx.json
+            reports/reproducibility_report.json
+            reports/distribution_reproducibility.json
+            reports/coverage.json
+            reports/api_concurrency_benchmark.json
+            reports/locking_recovery_report.json
+            artifacts/**/*manifest*.json
+            artifacts/**/release_decision.json
+            release_candidate_handoff.json
+            release_candidate_handoff.json.sha256
+            docs/improvement_report.md
+            docs/known_limitations.md
+
+  compatibility:
+    name: compatibility-${{ matrix.os }}-py${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.13"]
+        exclude:
+          - os: ubuntu-latest
+            python-version: "3.11"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            requirements.txt
+            requirements-dev.txt
+      - name: Install cross-platform test environment
+        run: >-
+          python -m pip install -e .
+          pytest pytest-cov httpx ruff build wheel packaging
+      - name: Cross-platform static and process contracts
+        run: |
+          python scripts/tasks.py lint
+          python scripts/tasks.py typecheck
+      - name: Cross-platform targeted tests
+        run: >-
+          python -m pytest
+          tests/unit/test_process_control.py
+          tests/unit/test_tasks_runner.py
+          tests/unit/test_locking.py
+          tests/unit/test_cli.py
+          tests/unit/test_pipeline_lock.py
+          tests/contract/test_api_schema.py
+          tests/contract/test_api_prediction.py
+      - name: Cross-platform classical smoke
+        run: python scripts/tasks.py smoke
+      - name: Cross-platform package verification
+        run: python scripts/tasks.py package-check
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build ready-to-serve image
+        run: docker build -t reference-state-last-mile-eta:ci .

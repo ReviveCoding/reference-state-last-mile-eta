@@ -1,0 +1,48 @@
+seed: 42
+data:
+  source: lade_normalized
+  path: data/lade_delivery_normalized.csv
+  snapshot_stride: 2
+  default_service_minutes: 5.0
+  assumed_speed_kmh: 15.0
+split:
+  train: 0.6
+  validation: 0.15
+  calibration: 0.1
+  test: 0.15
+rcot:
+  min_cohort_rows: 100
+  min_cohort_groups: 20
+  support_shrinkage: 150.0
+  max_dispersion_minutes: 120.0
+  cross_fit_splits: 5
+model:
+  n_estimators: 1000
+  learning_rate: 0.025
+  num_leaves: 64
+  min_child_samples: 50
+  random_state: 42
+advanced:
+  enabled: true
+  epochs: 25
+  batch_size: 512
+  hidden_dim: 192
+  learning_rate: 0.0003
+  max_tasks: 96
+  amp: true
+  deterministic: true
+calibration:
+  lower_alpha: 0.1
+  upper_alpha: 0.9
+  target_coverage: 0.8
+  coverage_tolerance: 0.08
+  minimum_test_rows: 100
+decision:
+  capacities:
+  - 0.05
+  - 0.1
+  - 0.2
+  review_cost: 1.0
+  selection_capacity: 0.1
+  minimum_validation_tail_events: 5
+  minimum_test_tail_events: 20

@@ -1,0 +1,106 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+
+# Generated model and data artifacts. Recreate with Make targets.
+artifacts/**/*.joblib
+artifacts/**/*.pt
+artifacts/**/*.db
+artifacts/**/data/
+artifacts/amazon_sample/
+artifacts/sample_lade_normalized.csv
+
+# Keep compact CSV/JSON/Markdown reports as optional portfolio evidence.
+reports/gpu_debug*/
+artifacts/gpu_debug*/
+
+.mypy_cache/
+
+# >>> pre-push hardening managed block >>>
+# Python / test / tooling caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.pytype/
+
+# Local environments and packaging output
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.secrets/
+
+# Local datasets and generated heavy artifacts
+.local/
+data/
+artifacts/**/lade_delivery_normalized.csv
+artifacts/**/lade_delivery_normalized.parquet
+artifacts/**/models/
+artifacts/**/*.joblib
+artifacts/**/*.pkl
+artifacts/**/*.pt
+artifacts/**/*.pth
+artifacts/**/*.onnx
+artifacts/**/*.bin
+
+# Machine-specific and temporary files
+*.log
+*.tmp
+*.bak
+Thumbs.db
+.DS_Store
+# <<< pre-push hardening managed block <<<
+
+# Machine-specific historical transcripts
+reports/final_release_log.txt
+
+# >>> github-first-commit-curation >>>
+# Generated experiment outputs and local release metadata.
+# Recreate these locally or in CI; keep only concise sanitized evidence in docs/.
+ /artifacts/
+ /reports/
+ /qualification_manifest.json
+ /release_bundle_manifest.json
+ /release_candidate_handoff.json
+ /release_candidate_handoff.json.sha256
+
+# Local working transcripts and interim reports superseded by docs/evidence/.
+ /FINAL_VALIDATION_REPORT.md
+ /IMPLEMENTATION_STATUS.md
+ /IMPROVEMENT_LOOPS.md
+# <<< github-first-commit-curation <<<
+
+# >>> github-first-commit-curation >>>
+# Generated experiment outputs and local release metadata.
+/artifacts/
+/reports/
+/qualification_manifest.json
+/release_bundle_manifest.json
+/release_candidate_handoff.json
+/release_candidate_handoff.json.sha256
+
+# Local working transcripts superseded by sanitized docs.
+/FINAL_VALIDATION_REPORT.md
+/IMPLEMENTATION_STATUS.md
+/IMPROVEMENT_LOOPS.md
+# <<< github-first-commit-curation <<<
