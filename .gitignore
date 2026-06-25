@@ -52,7 +52,7 @@ build/
 
 # Local datasets and generated heavy artifacts
 .local/
-data/
+/data/
 artifacts/**/lade_delivery_normalized.csv
 artifacts/**/lade_delivery_normalized.parquet
 artifacts/**/models/
