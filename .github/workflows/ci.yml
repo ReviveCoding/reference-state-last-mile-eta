@@ -51,7 +51,7 @@ jobs:
       - name: Build and verify release manifest
         run: make release-manifest
       - name: Upload validation evidence
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: validation-evidence-py311
           retention-days: 14
