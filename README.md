@@ -1,5 +1,7 @@
 # Reference-State Last-Mile ETA & Reliability Decision Platform
 
+[![CI](https://github.com/ReviveCoding/reference-state-last-mile-eta/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ReviveCoding/reference-state-last-mile-eta/actions/workflows/ci.yml)
+
 An end-to-end Applied Science project for last-mile ETA prediction, support-aware reference-state
 learning, calibrated uncertainty, and capacity-constrained operational triage.
 
@@ -30,28 +32,45 @@ RCOT is never assumed to help. It is evaluated as a challenger and emitted with:
 A do-no-harm promotion gate retains the no-RCOT baseline whenever RCOT lacks meaningful average or
 tail improvement, violates non-inferiority, or creates excessive worst-city regression.
 
+<!-- README_VISUALS_START -->
+
+## Final-confirmation scorecard
+
+<p align="center">
+  <img src="docs/assets/v2-final-confirmation-scorecard.svg" alt="V2 final confirmation scorecard comparing V1 baseline and V2 event-state ETA challenger." width="100%">
+</p>
+
+The V2 event-state challenger produced lower point-estimate held-out MAE and tail MAE on an untouched
+three-city final-confirmation cohort. It was **not promoted**: the pre-registered clustered-bootstrap
+interval for the challenger-minus-baseline MAE crossed zero. This is an offline ETA evaluation only;
+it does not claim production delay prevention.
+
+## Leakage-safe cohort design
+
+<p align="center">
+  <img src="docs/assets/cohort-isolation.svg" alt="Leakage-safe courier-day cohort isolation across pilot, confirmation, V2 development, and V2 final confirmation." width="100%">
+</p>
+
+V2 development and final confirmation use whole-courier-day exclusion. Pilot, earlier confirmation,
+and development courier-days are excluded from the final cohort before the locked feature suite and
+model are evaluated.
+
+<!-- README_VISUALS_END -->
+
 ## End-to-end system
 
-```text
-Synthetic or normalized LaDe-style task events
-        ↓
-Event-time snapshot builder and grouped chronological split
-        ↓
-Conditional median, LightGBM, and quantile LightGBM
-        ↓
-Forward-only temporal RCOT cross-fitting
-        ↓
-Dedicated conformal calibration period
-        ↓
-Delayed-label chronological calibration replay
-        ↓
-Tail probability and expected excess delay
-        ↓
-Validation-selected or prespecified-low-support triage policy
-        ↓
-SQL evidence, predictive/decision release gates
-        ↓
-Immutable serving bundle, manifests, API
+```mermaid
+flowchart TD
+    A[Observable task events] --> B[Event-time snapshot builder<br/>and grouped chronological split]
+    B --> C[Classical and probabilistic ETA baselines]
+    C --> D[Forward-only RCOT cross-fitting]
+    D --> E[Conformal calibration and delayed-label replay]
+    E --> F[MAE, tail-risk, and uncertainty evaluation]
+    F --> G{Promotion and release gates}
+    G -->|Promote| H[Immutable serving bundle]
+    G -->|Hold baseline| I[Record decision evidence]
+    H --> J[FastAPI serving, manifests, and telemetry]
+    I --> J
 ```
 
 A separate compact **HSG-ETA** path adds:
@@ -208,9 +227,9 @@ The repository records:
 - CycloneDX runtime SBOM,
 - repository, run, and immutable-bundle manifests.
 
-GitHub configuration includes a full Ubuntu/Python 3.11 release job, Windows 3.11/3.13 and Ubuntu
-3.13 compatibility jobs, workflow concurrency, CodeQL v4, Dependabot, Docker build, and tag-triggered
-artifact attestations. Remote workflow execution is not claimed in the bundled local evidence.
+GitHub configuration includes a full Ubuntu/Python 3.11 release job, Windows 3.11/3.13 and Ubuntu 3.13 compatibility jobs, workflow concurrency, CodeQL v4, Dependabot, Docker build, and tag-triggered artifact attestations.
+
+> **Hosted verification:** GitHub Actions CI passed for [`78c6197`](https://github.com/ReviveCoding/reference-state-last-mile-eta/commit/78c6197) across Ubuntu Python 3.13, Windows Python 3.11/3.13, Docker, and the validation pipeline. [View the successful run](https://github.com/ReviveCoding/reference-state-last-mile-eta/actions/runs/28208821437). Tag-triggered artifact attestation remains unverified.
 
 ## Commands
 
@@ -302,7 +321,7 @@ labels. The bundled sample is synthetic but structurally representative.
 - Actual NVIDIA AMP speedup or VRAM reduction.
 - Executed Spark-cluster or AWS SageMaker workloads.
 - Actual delay prevention or production impact.
-- Successful remote GitHub Actions, attestation, or Docker build.
+- Tag-triggered artifact attestation.
 
 See `THIRD_PARTY_DATA.md`, `docs/data_claim_boundary.md`, `IMPLEMENTATION_STATUS.md`, and
 `FINAL_VALIDATION_REPORT.md`.

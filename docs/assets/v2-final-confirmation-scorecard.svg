@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="800" viewBox="0 0 1440 800" role="img" aria-labelledby="title desc">
+  <title id="title">V2 Final Confirmation Scorecard</title>
+  <desc id="desc">A scorecard comparing baseline and event-state challenger ETA accuracy on a fully disjoint final confirmation cohort. The challenger lowers point-estimate MAE and tail MAE, but baseline promotion is held because the clustered-bootstrap confidence interval crosses zero.</desc>
+  <rect width="1440" height="800" fill="#F8FAFC"/>
+  <rect x="0" y="0" width="1440" height="104" fill="#0F172A"/>
+  <text x="72" y="52" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">V2 Final Confirmation Scorecard</text>
+  <text x="72" y="82" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="17">Locked event-state challenger on a fully disjoint three-city cohort</text>
+  <rect x="72" y="136" width="1296" height="58" rx="14" fill="#E0F2FE" stroke="#BAE6FD"/>
+  <text x="102" y="171" fill="#0C4A6E" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700">Final confirmation cohort</text>
+  <text x="418" y="171" fill="#075985" font-family="Arial, Helvetica, sans-serif" font-size="19">1,716 courier-days  •  39,941 normalized rows  •  Whole-courier-day isolation</text>
+  <rect x="72" y="230" width="405" height="280" rx="20" fill="#FFFFFF" stroke="#D7E0EB" stroke-width="2"/>
+  <text x="104" y="278" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Final held-out MAE</text>
+  <text x="104" y="310" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="16">Lower is better</text>
+  <line x1="104" y1="334" x2="445" y2="334" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="104" y="376" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="17">V1 baseline</text>
+  <text x="405" y="376" text-anchor="end" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">75.43</text>
+  <text x="104" y="424" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">V2 event-state</text>
+  <text x="405" y="424" text-anchor="end" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">73.98</text>
+  <rect x="104" y="452" width="184" height="36" rx="18" fill="#CCFBF1"/>
+  <text x="196" y="477" text-anchor="middle" fill="#115E59" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">↓ 1.92%</text>
+  <rect x="517" y="230" width="405" height="280" rx="20" fill="#FFFFFF" stroke="#D7E0EB" stroke-width="2"/>
+  <text x="549" y="278" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Tail MAE</text>
+  <text x="549" y="310" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="16">High-error slice; lower is better</text>
+  <line x1="549" y1="334" x2="890" y2="334" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="549" y="376" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="17">V1 baseline</text>
+  <text x="850" y="376" text-anchor="end" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">244.14</text>
+  <text x="549" y="424" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">V2 event-state</text>
+  <text x="850" y="424" text-anchor="end" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">240.83</text>
+  <rect x="549" y="452" width="184" height="36" rx="18" fill="#CCFBF1"/>
+  <text x="641" y="477" text-anchor="middle" fill="#115E59" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">↓ 1.35%</text>
+  <rect x="962" y="230" width="406" height="280" rx="20" fill="#FFFFFF" stroke="#D7E0EB" stroke-width="2"/>
+  <text x="994" y="278" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Promotion gate</text>
+  <text x="994" y="310" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="16">Pre-registered final decision rule</text>
+  <text x="998" y="355" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">✓  Validation signal</text>
+  <text x="998" y="390" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">✓  Held-out effect threshold</text>
+  <text x="998" y="425" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">✓  Tail non-inferiority</text>
+  <text x="998" y="460" fill="#B91C1C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">✕  CI excludes zero</text>
+  <rect x="994" y="476" width="205" height="38" rx="19" fill="#FEE2E2"/>
+  <text x="1096" y="502" text-anchor="middle" fill="#991B1B" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">HOLD BASELINE</text>
+  <rect x="72" y="552" width="1296" height="164" rx="20" fill="#FFFFFF" stroke="#D7E0EB" stroke-width="2"/>
+  <text x="104" y="596" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">Why the challenger was not promoted</text>
+  <text x="104" y="632" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="18">Clustered bootstrap, V2 − V1 MAE:</text>
+  <text x="504" y="632" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">−1.53  [−3.37, +0.34]</text>
+  <text x="104" y="671" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="17">Point estimates favor V2, but the 95% interval crosses zero. The platform records the improvement signal while retaining the baseline.</text>
+  <text x="104" y="700" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="15">Offline ETA evaluation only; no production delay-prevention claim.</text>
+</svg>
