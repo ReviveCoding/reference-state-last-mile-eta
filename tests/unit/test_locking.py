@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import time
 from pathlib import Path
 
 import pytest
 
+import reference_eta.locking as locking
 from reference_eta.locking import ExclusiveFileLock, LockTimeoutError
 
 
@@ -63,3 +65,29 @@ def test_non_owner_does_not_remove_replaced_lock(tmp_path: Path) -> None:
     path.write_text(json.dumps(metadata), encoding="utf-8")
     lock.release()
     assert path.exists()
+
+
+def test_windows_pid_probe_avoids_console_control_event(monkeypatch) -> None:
+    observed: list[list[str]] = []
+
+    def fake_run(
+        command: list[str],
+        **kwargs: object,
+    ) -> subprocess.CompletedProcess[str]:
+        observed.append(command)
+
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout='"python.exe","1234","Console","1","10 K"\n',
+            stderr="",
+        )
+
+    def forbidden_kill(pid: int, sig: int) -> None:
+        raise AssertionError(f"os.kill must not be used for Windows probing: {pid}, {sig}")
+
+    monkeypatch.setattr(locking.subprocess, "run", fake_run)
+    monkeypatch.setattr(locking.os, "kill", forbidden_kill)
+
+    assert locking._pid_is_running(1234, platform_name="nt")
+    assert observed == [["tasklist", "/FI", "PID eq 1234", "/FO", "CSV", "/NH"]]

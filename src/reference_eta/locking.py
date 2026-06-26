@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import csv
 import json
 import os
 import socket
+import subprocess
 import time
 import uuid
 from dataclasses import dataclass
@@ -13,9 +15,33 @@ class LockTimeoutError(TimeoutError):
     pass
 
 
-def _pid_is_running(pid: int) -> bool:
+def _windows_pid_is_running(pid: int) -> bool:
+    # Do not use os.kill(pid, 0) on Windows: signal 0 maps to CTRL_C_EVENT.
+    try:
+        completed = subprocess.run(
+            ["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"],
+            capture_output=True,
+            check=False,
+            text=True,
+        )
+    except OSError:
+        return False
+
+    for row in csv.reader(completed.stdout.splitlines()):
+        if len(row) >= 2 and row[1].strip() == str(pid):
+            return True
+    return False
+
+
+def _pid_is_running(pid: int, *, platform_name: str | None = None) -> bool:
     if pid <= 0:
         return False
+
+    platform_name = os.name if platform_name is None else platform_name
+
+    if platform_name == "nt":
+        return _windows_pid_is_running(pid)
+
     try:
         os.kill(pid, 0)
     except ProcessLookupError:

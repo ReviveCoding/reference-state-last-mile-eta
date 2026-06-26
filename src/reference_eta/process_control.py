@@ -7,6 +7,10 @@ from collections.abc import Callable
 from typing import Any, cast
 
 CREATE_NEW_PROCESS_GROUP = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200)
+WINDOWS_CTRL_BREAK_EVENT = cast(
+    signal.Signals | int,
+    getattr(signal, "CTRL_BREAK_EVENT", signal.SIGTERM),
+)
 
 
 def _kill_process_group(pid: int, sig: signal.Signals | int) -> None:
@@ -47,7 +51,7 @@ def terminate_process_tree(
 
     if platform_name == "nt":
         try:
-            process.send_signal(signal.CTRL_BREAK_EVENT)
+            process.send_signal(WINDOWS_CTRL_BREAK_EVENT)
         except (AttributeError, OSError, ValueError):
             try:
                 process.terminate()
