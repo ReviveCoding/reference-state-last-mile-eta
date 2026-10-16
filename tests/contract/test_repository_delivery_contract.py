@@ -5,9 +5,9 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_github_workflow_uses_current_official_action_majors() -> None:
     workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
-    assert "actions/checkout@v6" in workflow
-    assert "actions/setup-python@v6" in workflow
-    assert "actions/upload-artifact@v6" in workflow
+    assert "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803" in workflow
+    assert "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1" in workflow
+    assert "actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f" in workflow
     assert "make package-check verify-manifest" in workflow
     assert "docker build" in workflow
     assert "make repro-check" in workflow
