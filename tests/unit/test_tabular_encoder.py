@@ -6,7 +6,7 @@ from reference_eta.features.tabular import BASE_NUMERIC_FEATURES, TabularFeature
 
 
 def _frame(city: str = "Boston") -> pd.DataFrame:
-    row = {feature: 1.0 for feature in BASE_NUMERIC_FEATURES}
+    row = dict.fromkeys(BASE_NUMERIC_FEATURES, 1.0)
     row["city"] = city
     return pd.DataFrame([row])
 

@@ -4,13 +4,13 @@ from reference_eta.models.hsg_eta import CONTEXT_FEATURES, TASK_FEATURES, Snapsh
 
 
 def _snapshots() -> pd.DataFrame:
-    row = {feature: 1.0 for feature in CONTEXT_FEATURES}
+    row = dict.fromkeys(CONTEXT_FEATURES, 1.0)
     row.update({"snapshot_id": "s1", "target_route_remaining_minutes": 20.0})
     return pd.DataFrame([row])
 
 
 def _task(task_id: str, distance: float, actual_rank: int, target_next: int) -> dict[str, object]:
-    row: dict[str, object] = {feature: 1.0 for feature in TASK_FEATURES}
+    row: dict[str, object] = dict.fromkeys(TASK_FEATURES, 1.0)
     row.update(
         {
             "snapshot_id": "s1",
