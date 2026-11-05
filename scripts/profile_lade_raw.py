@@ -48,7 +48,7 @@ def _ds_mmdd(ds: pd.Series) -> pd.Series:
 
 def _quantiles(values: np.ndarray) -> dict[str, float | None]:
     if len(values) == 0:
-        return {name: None for name in ("min", "p01", "p05", "p50", "p90", "p95", "p99", "max")}
+        return dict.fromkeys(("min", "p01", "p05", "p50", "p90", "p95", "p99", "max"))
     return {
         "min": float(np.min(values)),
         "p01": float(np.quantile(values, 0.01)),

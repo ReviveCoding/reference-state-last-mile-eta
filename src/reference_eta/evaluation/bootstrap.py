@@ -39,21 +39,28 @@ def clustered_mae_difference_ci(
     baseline = _finite_vector(baseline_pred, name="baseline_pred", expected_length=len(frame))
     challenger = _finite_vector(challenger_pred, name="challenger_pred", expected_length=len(frame))
 
-    working = frame[list(cluster_columns)].copy()
-    working["y_true"] = y
-    working["baseline"] = baseline
-    working["challenger"] = challenger
-    clusters = list(working.groupby(list(cluster_columns), sort=False, dropna=False))
+    working = frame[list(cluster_columns)].reset_index(drop=True)
+    # Retain the original grouping behavior if a key uses one of these names.
+    for name, values in (("y_true", y), ("baseline", baseline), ("challenger", challenger)):
+        if name in cluster_columns:
+            working[name] = values
+    clusters = [
+        group.index.to_numpy()
+        for _, group in working.groupby(list(cluster_columns), sort=False, dropna=False)
+    ]
     if not clusters:
         raise ValueError("No bootstrap clusters were available")
+    baseline_errors = np.abs(y - baseline)
+    challenger_errors = np.abs(y - challenger)
+    baseline_clusters = [baseline_errors[positions] for positions in clusters]
+    challenger_clusters = [challenger_errors[positions] for positions in clusters]
 
     rng = np.random.default_rng(seed)
     differences: list[float] = []
     for _ in range(n_bootstrap):
         chosen = rng.integers(0, len(clusters), size=len(clusters))
-        sample = pd.concat([clusters[index][1] for index in chosen], ignore_index=True)
-        baseline_mae = np.mean(np.abs(sample["y_true"] - sample["baseline"]))
-        challenger_mae = np.mean(np.abs(sample["y_true"] - sample["challenger"]))
+        baseline_mae = np.mean(np.concatenate([baseline_clusters[index] for index in chosen]))
+        challenger_mae = np.mean(np.concatenate([challenger_clusters[index] for index in chosen]))
         differences.append(float(challenger_mae - baseline_mae))
     lower, upper = np.quantile(differences, [0.025, 0.975])
     return {
